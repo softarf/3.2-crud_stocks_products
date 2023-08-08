@@ -10,7 +10,6 @@ class ProductSerializer(serializers.ModelSerializer):
     class Meta:
         model = Product                            # Связанная модель.
         fields = ['id', 'title', 'description']    # Обрабатываемые поля.
-        # lookup_field = 'title'
 
 
 class ProductPositionSerializer(serializers.ModelSerializer):
@@ -19,8 +18,7 @@ class ProductPositionSerializer(serializers.ModelSerializer):
     class Meta:
         model = StockProduct                                        # Связанная модель.
         fields = ['id', 'product', 'quantity', 'price', 'stock']    # Обрабатываемые поля.
-        # extra_kwargs = {'id': {'write_only': True},
-        #                 'stock': {'write_only': True}}              # Сокрытие полей - отказывается исполнять.
+        extra_kwargs = {'stock': {'write_only': True}}
 
 
 class StockSerializer(serializers.ModelSerializer):
@@ -34,32 +32,30 @@ class StockSerializer(serializers.ModelSerializer):
 
     def create(self, validated_data):
         # Достаёт связанные данные для другой таблицы (StockProduct).
-        positions = validated_data.pop('positions', None)    # Тип 'positions' - список из упорядоченных словарей.
+        positions = validated_data.pop('positions', [])    # Тип 'positions' - список из упорядоченных словарей.
 
         # Создаёт склад по его параметрам.
         stock = super().create(validated_data)
 
-        if positions:
-            for position in positions:
-                # Добавляет товары на склад (заполняет связанную таблицу StockProduct).
-                position['stock_id'] = stock.id
-                StockProduct.objects.create(**position)
+        for position in positions:
+            # Добавляет товары на склад (заполняет связанную таблицу StockProduct).
+            position['stock_id'] = stock.id
+            StockProduct.objects.create(**position)
 
         return stock
 
     def update(self, instance, validated_data):
         # Достаёт связанные данные для другой таблицы (StockProduct).
-        positions = validated_data.pop('positions', None)
+        positions = validated_data.pop('positions', [])
 
         # Обновляет склад по его параметрам.
         stock = super().update(instance, validated_data)
 
-        if positions:
-            for position in positions:
-                # Добавляет товары на склад (меняет связанную таблицу StockProduct).
-                StockProduct.objects.update_or_create(stock=stock,
-                                                       product=position['product'],
-                                                       defaults={'quantity': position['quantity',
-                                                                 'price': position['price']
-                                                       ]})
+        for position in positions:
+            # Добавляет товары на склад (меняет связанную таблицу StockProduct).
+            StockProduct.objects.update_or_create(stock=stock,
+                                                   product=position['product'],
+                                                   defaults={'quantity': position['quantity',
+                                                             'price': position['price']
+                                                   ]})
         return stock

@@ -14,8 +14,7 @@ Content-Type: application/json
 ###
 
 # получение продуктов
-GET {{baseUrl}}/products/2
-Content-Type: application/json
+GET {{baseUrl}}/products/4
 
 ###
 
@@ -31,19 +30,11 @@ Content-Type: application/json
 
 # удаление продукта
 DELETE {{baseUrl}}/products/2/
-Content-Type: application/json
 
 ###
 
-# удаление склада
-DELETE {{baseUrl}}/stocks/Октябрьский/
-Content-Type: application/json
-
-###
-
-# поиск продуктов по названию и описанию search=помидор
+# поиск продуктов по названию и описанию
 GET {{baseUrl}}/products/?search=помид&search=огур
-Content-Type: application/json
 
 ###
 
@@ -71,7 +62,7 @@ Content-Type: application/json
 ###
 
 # обновление товаров на складе
-PATCH {{baseUrl}}/stocks/1/
+PATCH {{baseUrl}}/stocks/Центральный/
 Content-Type: application/json
 
 {
@@ -92,7 +83,7 @@ Content-Type: application/json
 ###
 
 # обновление товаров на складе
-PATCH {{baseUrl}}/stocks/Центральный/
+PATCH {{baseUrl}}/stocks/У лукоморья/
 Content-Type: application/json
 
 {
@@ -112,32 +103,18 @@ Content-Type: application/json
 
 ###
 
-# поиск складов, где есть определенный продукт ?products=2
-GET {{baseUrl}}/stocks/Ленинский
-Content-Type: application/json
+# поиск складов, где есть определённый продукт
+GET {{baseUrl}}/stocks/?product=4
 
 ###
 
-# создание склада
-POST {{baseUrl}}/stocks/
-Content-Type: application/json
+# поиск склада по его названию
+GET {{baseUrl}}/stocks/У лукоморья
 
-{
-  "name": "У лукоморья",
-  "address": "На деревне у дедушки",
-  "positions": [
-    {
-      "product": 4,
-      "quantity": 210,
-      "price": 160
-    },
-    {
-      "product": 3,
-      "quantity": 170,
-      "price": 200
-    }
-  ]
-}
+###
+
+# удаление склада (по его названию)
+DELETE {{baseUrl}}/stocks/Октябрьский/
 
 ###
 
@@ -158,6 +135,29 @@ Content-Type: application/json
       "product": 3,
       "quantity": 170,
       "price": 170
+    }
+  ]
+}
+
+###
+
+# создание склада
+POST {{baseUrl}}/stocks/
+Content-Type: application/json
+
+{
+  "name": "У лукоморья",
+  "address": "На деревне у дедушки",
+  "positions": [
+    {
+      "product": 4,
+      "quantity": 210,
+      "price": 160
+    },
+    {
+      "product": 3,
+      "quantity": 170,
+      "price": 200
     }
   ]
 }
