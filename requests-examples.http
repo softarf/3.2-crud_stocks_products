@@ -34,7 +34,7 @@ DELETE {{baseUrl}}/products/2/
 ###
 
 # поиск продуктов по названию и описанию
-GET {{baseUrl}}/products/?search=помид&search=огур
+GET {{baseUrl}}/products/?search=помид
 
 ###
 
