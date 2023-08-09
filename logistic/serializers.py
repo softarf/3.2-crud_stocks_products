@@ -17,8 +17,7 @@ class ProductPositionSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = StockProduct                                        # Связанная модель.
-        fields = ['id', 'product', 'quantity', 'price', 'stock']    # Обрабатываемые поля.
-        extra_kwargs = {'stock': {'write_only': True}}
+        fields = ['id', 'product', 'quantity', 'price']    # Обрабатываемые поля.
 
 
 class StockSerializer(serializers.ModelSerializer):
@@ -55,7 +54,7 @@ class StockSerializer(serializers.ModelSerializer):
             # Добавляет товары на склад (меняет связанную таблицу StockProduct).
             StockProduct.objects.update_or_create(stock=stock,
                                                    product=position['product'],
-                                                   defaults={'quantity': position['quantity',
+                                                   defaults={'quantity': position['quantity'],
                                                              'price': position['price']
-                                                   ]})
+                                                   })
         return stock
